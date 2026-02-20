@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Marshk Gallery - View our completed infrastructure projects">
+    <title>Gallery - Marshk Projects</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="font-poppins text-gray-900">
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="assets/images/logo.jpeg" alt="Marshk Logo" class="h-12 w-auto">
+                <span class="text-2xl font-bold text-gray-900">Marshk</span>
+            </div>
+
+            <ul class="hidden md:flex gap-8 items-center">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="index.html#about" class="nav-link">About</a></li>
+                <li><a href="index.html#services" class="nav-link">Services</a></li>
+                <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <button id="mobileMenuBtn" class="md:hidden text-gray-900 text-2xl">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-200">
+            <ul class="flex flex-col gap-4 p-6">
+                <li><a href="index.html" class="block text-gray-700 hover:text-blue-600">Home</a></li>
+                <li><a href="index.html#about" class="block text-gray-700 hover:text-blue-600">About</a></li>
+                <li><a href="index.html#services" class="block text-gray-700 hover:text-blue-600">Services</a></li>
+                <li><a href="#gallery" class="block text-gray-700 hover:text-blue-600">Gallery</a></li>
+                <li><a href="index.html#contact" class="block text-gray-700 hover:text-blue-600">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <section class="pt-20 pb-12 relative overflow-hidden min-h-96">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <div style="background-image: url('assets/images/telecommunications-network-setup-01.jpeg'); background-size: cover; background-position: center; background-attachment: fixed;" class="absolute inset-0"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/60 to-blue-900/70"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/5"></div>
+        </div>
+
+        <div class="container mx-auto px-6 py-16 relative z-10">
+            <div class="fade-in-up">
+                <span class="inline-block bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-semibold mb-4">Project Showcase</span>
+                <h1 class="text-5xl md:text-6xl font-bold text-white mb-4">Project Gallery</h1>
+                <p class="text-xl text-gray-200 max-w-2xl">Explore our portfolio of completed infrastructure projects showcasing our expertise, innovation, and commitment to excellence</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <!-- Intro Text -->
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Our Latest Projects</h2>
+                <p class="text-lg text-gray-600">Click on any image to view in fullscreen</p>
+            </div>
+
+            <!-- Masonry Grid -->
+            <div class="columns-1 md:columns-2 lg:columns-3 gap-6" id="galleryGrid">
+                <!-- Gallery Items will be generated here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="hidden fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
+        <div class="relative max-w-4xl w-full">
+            <!-- Close Button -->
+            <button id="closeLightbox" class="absolute -top-12 right-0 text-white text-3xl hover:text-gray-300 transition">
+                ✕
+            </button>
+
+            <!-- Image Container -->
+            <img id="lightboxImage" src="" alt="Fullscreen view" class="w-full h-auto rounded-lg">
+
+            <!-- Navigation Buttons -->
+            <button id="prevBtn" class="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-16 text-white text-3xl hover:text-gray-300 transition hidden md:block">
+                ❮
+            </button>
+            <button id="nextBtn" class="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-16 text-white text-3xl hover:text-gray-300 transition hidden md:block">
+                ❯
+            </button>
+
+            <!-- Image Counter -->
+            <div id="imageCounter" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white bg-black/50 px-4 py-2 rounded-lg"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-16">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-4">Marshk</h3>
+                    <p class="text-sm leading-relaxed">
+                        Leading provider of construction and infrastructure services.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.html" class="hover:text-blue-400 transition">Home</a></li>
+                        <li><a href="index.html#about" class="hover:text-blue-400 transition">About</a></li>
+                        <li><a href="index.html#services" class="hover:text-blue-400 transition">Services</a></li>
+                        <li><a href="#gallery" class="hover:text-blue-400 transition">Gallery</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4">Services</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.html#services" class="hover:text-blue-400 transition">Electrical</a></li>
+                        <li><a href="index.html#services" class="hover:text-blue-400 transition">Telecommunications</a></li>
+                        <li><a href="index.html#services" class="hover:text-blue-400 transition">Renewable Energy</a></li>
+                        <li><a href="index.html#services" class="hover:text-blue-400 transition">Consultancy</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4">Contact</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-start gap-2">
+                            <span class="text-blue-400">📍</span>
+                            <span>Kenya</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-blue-400">📧</span>
+                            <a href="mailto:info@marshk.com" class="hover:text-blue-400 transition">info@marshk.com</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 flex flex-col sm:flex-row justify-between items-center">
+                <p class="text-sm text-gray-500">&copy; 2026 Marshk Investments Limited. All rights reserved.</p>
+                <div class="flex gap-6 mt-4 sm:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition">LinkedIn</a>
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition">Twitter</a>
+                    <a href="#" class="text-gray-400 hover:text-blue-400 transition">Facebook</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script>
+        // Gallery functionality
+        const galleryGrid = document.getElementById('galleryGrid');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const closeLightbox = document.getElementById('closeLightbox');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const imageCounter = document.getElementById('imageCounter');
+
+        // Get all images from the assets/images folder
+        const images = [
+            'infrastructure-power-distribution-01.jpeg',
+            'telecommunications-tower-installation-01.jpeg',
+            'power-distribution-system-01.jpeg',
+            'electrical-infrastructure-setup-01.jpeg',
+            'construction-project-site-01.jpeg',
+            'infrastructure-installation-work-01.jpeg',
+            'site-supervision-project-01.jpeg',
+            'power-transmission-lines-01.jpeg',
+            'telecommunications-infrastructure-02.jpeg',
+            'electrical-substation-installation-01.jpeg',
+            'construction-infrastructure-02.jpeg',
+            'site-inspection-supervision-01.jpeg',
+            'renewable-energy-installation-01.jpeg',
+            'power-generation-facility-01.jpeg',
+            'infrastructure-project-completion-01.jpeg',
+            'electrical-wiring-installation-01.jpeg',
+            'construction-site-progress-01.jpeg',
+            'telecommunications-network-setup-01.jpeg',
+            'power-distribution-network-02.jpeg',
+            'electrical-installation-progress-01.jpeg',
+            'infrastructure-maintenance-work-01.jpeg',
+            'construction-equipment-operation-01.jpeg',
+            'site-preparation-work-01.jpeg',
+            'infrastructure-project-phase-01.jpeg',
+            'electrical-testing-commissioning-01.jpeg',
+            'telecommunications-cable-installation-01.jpeg',
+            'power-system-integration-01.jpeg',
+            'construction-site-overview-01.jpeg',
+            'installation-verification-work-01.jpeg',
+            'infrastructure-quality-check-01.jpeg',
+            'project-team-coordination-01.jpeg',
+            'equipment-installation-setup-01.jpeg',
+            'site-safety-inspection-01.jpeg',
+            'infrastructure-system-testing-01.jpeg',
+            'construction-crew-workflow-01.jpeg',
+            'power-infrastructure-upgrade-01.jpeg',
+            'telecommunications-fiber-optic-01.jpeg',
+            'electrical-distribution-network-01.jpeg',
+            'construction-milestone-achievement-01.jpeg',
+            'infrastructure-final-inspection-01.jpeg',
+            'project-stakeholder-presentation-01.jpeg',
+            'site-restoration-completion-01.jpeg',
+            'infrastructure-operational-status-01.jpeg',
+            'construction-success-documentation-01.jpeg',
+            'power-system-optimization-01.jpeg'
+        ];
+
+        let currentImageIndex = 0;
+
+        // Generate gallery items
+        images.forEach((img, index) => {
+            const div = document.createElement('div');
+            div.className = 'break-inside-avoid mb-6 cursor-pointer group hover:opacity-80 transition duration-300 fade-in-up';
+            div.style.animationDelay = `${(index % 5) * 0.1}s`;
+            
+            const img_elem = document.createElement('img');
+            img_elem.src = `assets/images/${img}`;
+            img_elem.alt = `Project ${index + 1}`;
+            img_elem.className = 'w-full rounded-lg shadow-md hover:shadow-xl transition duration-300 object-cover';
+            
+            img_elem.addEventListener('click', () => openLightbox(index));
+            div.appendChild(img_elem);
+            galleryGrid.appendChild(div);
+        });
+
+        // Lightbox functions
+        function openLightbox(index) {
+            currentImageIndex = index;
+            updateLightbox();
+            lightbox.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function updateLightbox() {
+            const img = images[currentImageIndex];
+            lightboxImage.src = `assets/images/${img}`;
+            imageCounter.textContent = `${currentImageIndex + 1} / ${images.length}`;
+        }
+
+        function closeLightboxModal() {
+            lightbox.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            updateLightbox();
+        }
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+            updateLightbox();
+        }
+
+        // Event listeners
+        closeLightbox.addEventListener('click', closeLightboxModal);
+        nextBtn.addEventListener('click', nextImage);
+        prevBtn.addEventListener('click', prevImage);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('hidden')) return;
+            if (e.key === 'Escape') closeLightboxModal();
+            if (e.key === 'ArrowRight') nextImage();
+            if (e.key === 'ArrowLeft') prevImage();
+        });
+
+        // Close on background click
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightboxModal();
+        });
+    </script>
+</body>
+</html>
