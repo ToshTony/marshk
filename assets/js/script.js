@@ -290,35 +290,19 @@ if (navbar) {
 
 // ===== COUNTER ANIMATION FOR STATS =====
 function animateCounters() {
-    const counters = document.querySelectorAll('[data-count]');
+    const counters = document.querySelectorAll('.counter[data-count]');
+    const animated = new Set();
     
     const counterOptions = {
-        threshold: 0.5
+        threshold: 0.6,
+        rootMargin: '0px'
     };
 
     const counterObserver = new IntersectionObserver(function(entries) {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const target = entry.target;
-                const finalValue = parseInt(target.getAttribute('data-count'));
-                const startValue = 0;
-                const duration = 2000; // 2 seconds
-                const increment = finalValue / (duration / 16); // 60fps
-
-                let currentValue = startValue;
-
-                const updateCounter = () => {
-                    currentValue += increment;
-                    if (currentValue < finalValue) {
-                        target.textContent = Math.floor(currentValue);
-                        requestAnimationFrame(updateCounter);
-                    } else {
-                        target.textContent = finalValue;
-                    }
-                };
-
-                updateCounter();
-                counterObserver.unobserve(target);
+            if (entry.isIntersecting && !animated.has(entry.target)) {
+                animated.add(entry.target);
+                animateCounter(entry.target);
             }
         });
     }, counterOptions);
@@ -326,7 +310,32 @@ function animateCounters() {
     counters.forEach(counter => counterObserver.observe(counter));
 }
 
-// Call counter animation if needed
+function animateCounter(element) {
+    const finalValue = parseInt(element.getAttribute('data-count'));
+    const startValue = 0;
+    const duration = 2000; // 2000ms = 2 seconds
+    const easeOutQuad = (t) => t * (2 - t); // easing function for smooth feel
+    const startTime = Date.now();
+
+    const updateCounter = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easedProgress = easeOutQuad(progress);
+        const currentValue = Math.floor(startValue + (finalValue - startValue) * easedProgress);
+        
+        element.textContent = currentValue;
+        
+        if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+        } else {
+            element.textContent = finalValue;
+        }
+    };
+
+    updateCounter();
+}
+
+// Call counter animation on page load
 document.addEventListener('DOMContentLoaded', animateCounters);
 
 // ===== FORM VALIDATION =====
@@ -374,23 +383,154 @@ function initializeFormValidation() {
 
 document.addEventListener('DOMContentLoaded', initializeFormValidation);
 
+// ===== LOGO CAROUSEL AUTO-SCROLL =====
+function initLogoCarousel() {
+    const carousel = document.getElementById('logoCarousel');
+    const scrollLeft = document.getElementById('scrollLeft');
+    const scrollRight = document.getElementById('scrollRight');
+    
+    if (!carousel) return;
+
+    let autoScrollInterval;
+    const scrollAmount = 320; // Width of card + gap
+
+    function autoScroll() {
+        carousel.scrollLeft += scrollAmount;
+        // Loop back to start when reaching end
+        if (carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth) {
+            carousel.scrollLeft = 0;
+        }
+    }
+
+    function resetAutoScroll() {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = setInterval(autoScroll, 5000); // Auto-scroll every 5 seconds
+    }
+
+    // Scroll button controls
+    if (scrollLeft) {
+        scrollLeft.addEventListener('click', () => {
+            carousel.scrollLeft -= scrollAmount;
+            resetAutoScroll();
+        });
+    }
+
+    if (scrollRight) {
+        scrollRight.addEventListener('click', () => {
+            carousel.scrollLeft += scrollAmount;
+            resetAutoScroll();
+        });
+    }
+
+    // Pause on hover
+    carousel.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
+    carousel.addEventListener('mouseleave', () => resetAutoScroll());
+
+    // Start auto-scroll
+    autoScrollInterval = setInterval(autoScroll, 5000);
+}
+
+document.addEventListener('DOMContentLoaded', initLogoCarousel);
+
+// ===== QUOTATION FORM HANDLER =====
+function initQuotationForm() {
+    const quotationForm = document.getElementById('quotationForm');
+    if (!quotationForm) return;
+
+    quotationForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Validate all required fields
+        const requiredInputs = quotationForm.querySelectorAll('[required]');
+        let isValid = true;
+        
+        requiredInputs.forEach(input => {
+            if (!input.value.trim() || (input.type === 'checkbox' && !input.checked)) {
+                input.classList.add('border-red-500', 'bg-red-50');
+                isValid = false;
+            } else {
+                input.classList.remove('border-red-500', 'bg-red-50');
+            }
+        });
+
+        if (isValid) {
+            // Collect form data
+            const formData = new FormData(quotationForm);
+            const data = {
+                fullName: formData.get('fullName'),
+                company: formData.get('company'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                location: formData.get('location'),
+                category: formData.get('category'),
+                description: formData.get('description'),
+                budget: formData.get('budget'),
+                startDate: formData.get('startDate'),
+                timeline: formData.get('timeline'),
+                source: formData.get('source'),
+                timestamp: new Date().toISOString()
+            };
+            
+            // Log form data (in production, send to backend)
+            console.log('Quotation Request:', data);
+            
+            // Show success message
+            const successMsg = document.getElementById('successMessage');
+            successMsg.classList.remove('hidden');
+            quotationForm.style.opacity = '0.5';
+            quotationForm.style.pointerEvents = 'none';
+            
+            // Scroll to success message
+            successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Reset form after 3 seconds
+            setTimeout(() => {
+                quotationForm.reset();
+                quotationForm.style.opacity = '1';
+                quotationForm.style.pointerEvents = 'auto';
+                successMsg.classList.add('hidden');
+            }, 3000);
+        } else {
+            alert('Please fill in all required fields correctly.');
+        }
+    });
+
+    // Remove error styling on focus
+    const formInputs = quotationForm.querySelectorAll('input, textarea, select');
+    formInputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.classList.remove('border-red-500', 'bg-red-50');
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initQuotationForm);
+
 // ===== LAZY LOAD IMAGES =====
 function lazyLoadImages() {
     const images = document.querySelectorAll('img[loading="lazy"]');
-    
+
     if ('IntersectionObserver' in window) {
         const imageObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.removeAttribute('loading');
+                    if (img.dataset && img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('loading');
+                        img.removeAttribute('data-src');
+                    }
                     observer.unobserve(img);
                 }
             });
-        });
+        }, {rootMargin: '200px 0px'});
 
         images.forEach(img => imageObserver.observe(img));
+    } else {
+        // Fallback: load all images immediately
+        images.forEach(img => {
+            if (img.dataset && img.dataset.src) img.src = img.dataset.src;
+        });
     }
 }
 
