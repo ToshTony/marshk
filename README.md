@@ -7,7 +7,7 @@ This is a modern, professional, responsive website for **Marshk Investments Limi
 ## 📁 Project Structure
 
 ```
-portfolio/
+marshk/
 ├── index.html              # Main landing page
 ├── gallery.html            # Project gallery with lightbox
 ├── assets/
@@ -44,7 +44,7 @@ portfolio/
 8. **Footer** - Complete footer with links, social media, and copyright
 
 #### Gallery Page (gallery.html)
-1. **Responsive Masonry Layout** - 3-column grid that adapts to screen size
+1. **Category-Based Horizontal Galleries** - Scrollable tracks grouped by project type
 2. **Lightbox Modal** - Click to view full-size images with smooth animations
 3. **Keyboard Navigation** - Arrow keys to navigate, Escape to close
 4. **Image Counter** - Current image position display
@@ -70,7 +70,7 @@ portfolio/
 ## 🚀 Getting Started
 
 ### Option 1: Open in Browser (Quickest)
-1. Navigate to the portfolio directory
+1. Navigate to the `marshk` directory
 2. Double-click `index.html` to open in your default browser
 3. Website will load and be fully functional
 
@@ -78,20 +78,20 @@ portfolio/
 
 #### Using Python 3:
 ```bash
-cd ~/Downloads/portfolio
+cd ~/Downloads/marshk
 python3 -m http.server 8000
 ```
 
 #### Using Python 2:
 ```bash
-cd ~/Downloads/portfolio
+cd ~/Downloads/marshk
 python -m SimpleHTTPServer 8000
 ```
 
 #### Using Node.js (http-server):
 ```bash
 npm install -g http-server
-cd ~/Downloads/portfolio
+cd ~/Downloads/marshk
 http-server
 ```
 
@@ -170,12 +170,12 @@ To change globally:
 3. Replace Tailwind color classes (e.g., `bg-blue-600` → `bg-green-600`)
 
 ### 6. Gallery Management
-The gallery automatically loads all JPEG images from `assets/images/` folder.
+The gallery uses categorized image arrays inside `gallery.html` and renders them dynamically.
 
 **To add new images:**
 1. Copy images to `assets/images/` folder
-2. Reload `gallery.html` - images will appear automatically
-3. Lightbox automatically creates navigation for all images
+2. Add each filename to the relevant category in `imagesByCategory` inside `gallery.html`
+3. Reload `gallery.html` - lightbox navigation will update automatically
 
 **To remove images:**
 1. Delete image files from `assets/images/`
@@ -230,7 +230,7 @@ Add to `index.html` for better search results:
 ### Option 1: GitHub Pages (Free)
 1. Create GitHub account
 2. Create repository named `yourusername.github.io`
-3. Push portfolio files to main branch
+3. Push website files to main branch
 4. Website auto-deploys to `https://yourusername.github.io`
 
 ### Option 2: Netlify (Free Tier)

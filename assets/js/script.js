@@ -173,8 +173,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Toggle mobile menu
     if (mobileMenuBtn) {
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+
         mobileMenuBtn.addEventListener('click', function() {
             mobileMenu.classList.toggle('hidden');
+            mobileMenuBtn.setAttribute('aria-expanded', String(!mobileMenu.classList.contains('hidden')));
         });
 
         // Close menu when a link is clicked
@@ -182,6 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
         mobileLinks.forEach(link => {
             link.addEventListener('click', function() {
                 mobileMenu.classList.add('hidden');
+                mobileMenuBtn.setAttribute('aria-expanded', 'false');
             });
         });
 
@@ -192,6 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (!isClickInsideMenu && !isClickOnButton) {
                 mobileMenu.classList.add('hidden');
+                mobileMenuBtn.setAttribute('aria-expanded', 'false');
             }
         });
     }
@@ -294,15 +299,23 @@ function animateCounters() {
     const animated = new Set();
     
     const counterOptions = {
-        threshold: 0.6,
+        threshold: 0.45,
         rootMargin: '0px'
     };
 
     const counterObserver = new IntersectionObserver(function(entries) {
         entries.forEach(entry => {
-            if (entry.isIntersecting && !animated.has(entry.target)) {
-                animated.add(entry.target);
-                animateCounter(entry.target);
+            const isRepeat = entry.target.getAttribute('data-repeat') === 'true';
+
+            if (entry.isIntersecting) {
+                if (!animated.has(entry.target) || isRepeat) {
+                    animated.add(entry.target);
+                    animateCounter(entry.target);
+                }
+            } else if (isRepeat) {
+                // Reset repeated counters so they animate again when re-entering view.
+                animated.delete(entry.target);
+                entry.target.textContent = '0';
             }
         });
     }, counterOptions);
@@ -343,6 +356,11 @@ function initializeFormValidation() {
     const forms = document.querySelectorAll('form');
     
     forms.forEach(form => {
+        // Skip forms with dedicated custom handlers.
+        if (form.id === 'quotationForm' || form.hasAttribute('data-custom-handler')) {
+            return;
+        }
+
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -382,55 +400,6 @@ function initializeFormValidation() {
 }
 
 document.addEventListener('DOMContentLoaded', initializeFormValidation);
-
-// ===== LOGO CAROUSEL AUTO-SCROLL =====
-function initLogoCarousel() {
-    const carousel = document.getElementById('logoCarousel');
-    const scrollLeft = document.getElementById('scrollLeft');
-    const scrollRight = document.getElementById('scrollRight');
-    
-    if (!carousel) return;
-
-    let autoScrollInterval;
-    const scrollAmount = 320; // Width of card + gap
-
-    function autoScroll() {
-        carousel.scrollLeft += scrollAmount;
-        // Loop back to start when reaching end
-        if (carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth) {
-            carousel.scrollLeft = 0;
-        }
-    }
-
-    function resetAutoScroll() {
-        clearInterval(autoScrollInterval);
-        autoScrollInterval = setInterval(autoScroll, 5000); // Auto-scroll every 5 seconds
-    }
-
-    // Scroll button controls
-    if (scrollLeft) {
-        scrollLeft.addEventListener('click', () => {
-            carousel.scrollLeft -= scrollAmount;
-            resetAutoScroll();
-        });
-    }
-
-    if (scrollRight) {
-        scrollRight.addEventListener('click', () => {
-            carousel.scrollLeft += scrollAmount;
-            resetAutoScroll();
-        });
-    }
-
-    // Pause on hover
-    carousel.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
-    carousel.addEventListener('mouseleave', () => resetAutoScroll());
-
-    // Start auto-scroll
-    autoScrollInterval = setInterval(autoScroll, 5000);
-}
-
-document.addEventListener('DOMContentLoaded', initLogoCarousel);
 
 // ===== QUOTATION FORM HANDLER =====
 function initQuotationForm() {

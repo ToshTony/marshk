@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body class="font-poppins text-gray-900">
+    <a href="#main-content" class="skip-to-main">Skip to main content</a>
+
     <!-- Navigation -->
     <nav class="fixed w-full top-0 z-50 bg-white shadow-md">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -28,7 +30,7 @@
                 <li><a href="index.html#contact" class="nav-link">Contact</a></li>
             </ul>
 
-            <button id="mobileMenuBtn" class="md:hidden text-gray-900 text-2xl">
+            <button id="mobileMenuBtn" class="md:hidden text-gray-900 text-2xl" aria-label="Toggle navigation menu" aria-controls="mobileMenu">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
@@ -45,6 +47,8 @@
             </ul>
         </div>
     </nav>
+
+    <main id="main-content">
 
     <!-- Hero Banner -->
     <section class="pt-20 pb-12 relative overflow-hidden min-h-96">
@@ -170,6 +174,8 @@
             <div id="imageCounter" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white bg-black/50 px-4 py-2 rounded-lg"></div>
         </div>
     </div>
+
+    </main>
 
     <!-- Footer -->
     <footer class="bg-gray-900 text-gray-400 py-16">
