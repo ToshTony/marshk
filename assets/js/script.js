@@ -570,6 +570,148 @@ function initDarkMode() {
 
 document.addEventListener('DOMContentLoaded', initDarkMode);
 
+// ===== HORIZONTAL LOGO SLIDERS =====
+function initLogoSlider(config) {
+    const wrapper = document.getElementById(config.wrapperId);
+    const track = document.getElementById(config.trackId);
+    const prevBtn = document.getElementById(config.prevBtnId);
+    const nextBtn = document.getElementById(config.nextBtnId);
+
+    if (!wrapper || !track || !prevBtn || !nextBtn) return;
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const scrollStep = config.scrollStep || 220;
+    const autoStep = config.autoStep || 170;
+    const intervalMs = config.intervalMs || 1400;
+    let autoInterval = null;
+
+    function maxScrollLeft() {
+        return Math.max(wrapper.scrollWidth - wrapper.clientWidth, 0);
+    }
+
+    function scrollByStep(direction) {
+        const nextLeft = wrapper.scrollLeft + direction * scrollStep;
+        const maxLeft = maxScrollLeft();
+
+        if (nextLeft >= maxLeft - 4) {
+            wrapper.scrollTo({ left: 0, behavior: 'smooth' });
+            return;
+        }
+
+        if (nextLeft <= 0) {
+            wrapper.scrollTo({ left: maxLeft, behavior: 'smooth' });
+            return;
+        }
+
+        wrapper.scrollBy({ left: direction * scrollStep, behavior: 'smooth' });
+    }
+
+    function autoAdvance() {
+        const maxLeft = maxScrollLeft();
+        if (maxLeft <= 0) return;
+
+        if (wrapper.scrollLeft >= maxLeft - 4) {
+            wrapper.scrollTo({ left: 0, behavior: 'smooth' });
+            return;
+        }
+
+        wrapper.scrollBy({ left: autoStep, behavior: 'smooth' });
+    }
+
+    function stopAuto() {
+        if (autoInterval) {
+            clearInterval(autoInterval);
+            autoInterval = null;
+        }
+    }
+
+    function startAuto() {
+        if (reducedMotion || autoInterval) return;
+        autoInterval = setInterval(autoAdvance, intervalMs);
+    }
+
+    function resetAuto() {
+        stopAuto();
+        startAuto();
+    }
+
+    prevBtn.addEventListener('click', () => {
+        scrollByStep(-1);
+        resetAuto();
+    });
+
+    nextBtn.addEventListener('click', () => {
+        scrollByStep(1);
+        resetAuto();
+    });
+
+    wrapper.addEventListener('mouseenter', stopAuto);
+    wrapper.addEventListener('mouseleave', startAuto);
+    wrapper.addEventListener('touchstart', stopAuto, { passive: true });
+    wrapper.addEventListener('touchend', () => {
+        setTimeout(startAuto, intervalMs);
+    }, { passive: true });
+
+    startAuto();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initLogoSlider({
+        wrapperId: 'clientsLogosWrapper',
+        trackId: 'clientsLogosTrack',
+        prevBtnId: 'clientsPrevBtn',
+        nextBtnId: 'clientsNextBtn',
+        scrollStep: 260,
+        autoStep: 200,
+        intervalMs: 1200
+    });
+
+    initLogoSlider({
+        wrapperId: 'certificationsLogosWrapper',
+        trackId: 'certificationsLogosTrack',
+        prevBtnId: 'certificationsPrevBtn',
+        nextBtnId: 'certificationsNextBtn',
+        scrollStep: 220,
+        autoStep: 170,
+        intervalMs: 1300
+    });
+});
+
+// ===== WHY CHOOSE INTERACTIVE CARDS =====
+function initWhyChooseCards() {
+    const strip = document.getElementById('whyChooseStrip');
+    if (!strip) return;
+
+    const cards = Array.from(strip.querySelectorAll('.why-card'));
+    if (!cards.length) return;
+
+    function activateCard(activeCard) {
+        cards.forEach(card => {
+            const trigger = card.querySelector('.why-card-trigger');
+            const isActive = card === activeCard;
+            card.classList.toggle('is-active', isActive);
+
+            if (trigger) {
+                trigger.setAttribute('aria-expanded', String(isActive));
+            }
+        });
+    }
+
+    cards.forEach(card => {
+        const trigger = card.querySelector('.why-card-trigger');
+        if (!trigger) return;
+
+        trigger.addEventListener('click', () => activateCard(card));
+        card.addEventListener('mouseenter', () => activateCard(card));
+        card.addEventListener('focusin', () => activateCard(card));
+    });
+
+    const initialCard = strip.querySelector('.why-card.is-active') || cards[0];
+    activateCard(initialCard);
+}
+
+document.addEventListener('DOMContentLoaded', initWhyChooseCards);
+
 // ===== KEYBOARD SHORTCUTS =====
 function initKeyboardShortcuts() {
     document.addEventListener('keydown', (e) => {

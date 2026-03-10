@@ -511,30 +511,62 @@ img {
 }
 
 /* ===== CERTIFICATION LOGOS CAROUSEL ===== */
-.certification-logos-section {
+.certification-logos-section,
+.client-logos-section {
     position: relative;
 }
 
-.certification-logos-wrapper {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-}
-
-.certification-logos-track {
+.slider-nav-controls {
     display: flex;
-    gap: 3rem;
-    animation: scroll-logos 40s linear infinite;
-    will-change: transform;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
 }
 
-.certification-logos-track:hover {
-    animation-play-state: paused;
+.logo-slider-btn {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9999px;
+    background: #ffffff;
+    color: #1d4ed8;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
 }
 
-.certification-logo-item {
+.logo-slider-btn:hover {
+    transform: translateY(-1px);
+    border-color: #93c5fd;
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.18);
+}
+
+.logo-slider-btn:active {
+    transform: translateY(0);
+}
+
+.certification-logos-wrapper,
+.client-logos-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.5rem;
+}
+
+.certification-logos-track,
+.client-logos-track {
+    display: flex;
+    width: max-content;
+    gap: 1.25rem;
+}
+
+.certification-logo-item,
+.client-logo-item {
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -542,13 +574,24 @@ img {
     padding: 1rem;
     background: white;
     border-radius: 12px;
+    border: 1px solid #e2e8f0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    scroll-snap-align: start;
+}
+
+.certification-logo-item {
     min-width: 180px;
     height: 120px;
 }
 
-.certification-logo-item:hover {
+.client-logo-item {
+    min-width: 200px;
+    height: 120px;
+}
+
+.certification-logo-item:hover,
+.client-logo-item:hover {
     transform: translateY(-4px);
     box-shadow: 0 6px 16px rgba(37, 99, 235, 0.15);
 }
@@ -563,79 +606,6 @@ img {
     transition: filter 0.3s ease;
 }
 
-.certification-logo-item:hover .certification-logo {
-    filter: grayscale(0%);
-}
-
-@keyframes scroll-logos {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-@media (max-width: 768px) {
-    .certification-logos-track {
-        gap: 2rem;
-        animation-duration: 30s;
-    }
-    
-    .certification-logo-item {
-        min-width: 140px;
-        height: 100px;
-    }
-    
-    .certification-logo {
-        max-width: 130px;
-        max-height: 80px;
-    }
-}
-
-/* ===== CLIENT LOGOS CAROUSEL ===== */
-.client-logos-section {
-    position: relative;
-}
-
-.client-logos-wrapper {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-}
-
-.client-logos-track {
-    display: flex;
-    gap: 3rem;
-    animation: scroll-clients 50s linear infinite;
-    will-change: transform;
-}
-
-.client-logos-track:hover {
-    animation-play-state: paused;
-}
-
-.client-logo-item {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    min-width: 200px;
-    height: 120px;
-}
-
-.client-logo-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.15);
-}
-
 .client-logo {
     max-width: 180px;
     max-height: 100px;
@@ -646,33 +616,126 @@ img {
     transition: filter 0.3s ease;
 }
 
+.certification-logo-item:hover .certification-logo,
 .client-logo-item:hover .client-logo {
     filter: grayscale(0%);
 }
 
-@keyframes scroll-clients {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
+/* ===== WHY CHOOSE HORIZONTAL STRIP ===== */
+.why-choose-strip {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.5rem;
+}
+
+.why-card {
+    flex: 0 0 260px;
+    background: linear-gradient(180deg, #f8fbff 0%, #eff6ff 100%);
+    border: 1px solid #dbeafe;
+    border-radius: 14px;
+    padding: 1rem;
+    scroll-snap-align: start;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.why-card-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    text-align: left;
+    transform: none;
+}
+
+.why-card-trigger:hover {
+    transform: none;
+}
+
+.why-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #1d4ed8;
+    color: #ffffff;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.why-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.why-card-content {
+    margin-top: 0.85rem;
+    color: #334155;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(-6px);
+    transition: max-height 0.35s ease, opacity 0.35s ease, transform 0.35s ease;
+}
+
+.why-card:hover,
+.why-card.is-active {
+    transform: translateY(-4px);
+    border-color: #93c5fd;
+    box-shadow: 0 16px 28px rgba(37, 99, 235, 0.14);
+    background: #ffffff;
+}
+
+.why-card:hover .why-card-content,
+.why-card.is-active .why-card-content {
+    max-height: 180px;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.why-card:hover .why-icon,
+.why-card.is-active .why-icon {
+    background: #0284c7;
 }
 
 @media (max-width: 768px) {
-    .client-logos-track {
-        gap: 2rem;
-        animation-duration: 40s;
+    .slider-nav-controls {
+        justify-content: center;
     }
-    
+
     .client-logo-item {
         min-width: 160px;
         height: 100px;
     }
-    
+
+    .certification-logo-item {
+        min-width: 150px;
+        height: 100px;
+    }
+
     .client-logo {
-        max-width: 150px;
-        max-height: 80px;
+        max-width: 145px;
+        max-height: 82px;
+    }
+
+    .certification-logo {
+        max-width: 130px;
+        max-height: 82px;
+    }
+
+    .why-card {
+        flex-basis: 220px;
     }
 }
 
